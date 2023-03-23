@@ -70,7 +70,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git gitignore zsh-history-substring-search)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -104,8 +104,16 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-eval `ssh-agent`
-ssh-add ~/.ssh/git
+# Add git SSH key
+if [ -z "$SSH_AUTH_LOCK" ] ; then
+    eval `ssh-agent`
+    ssh-add ~/.ssh/git
+fi 
+
+# Custom stuff
+# eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+
 
 prompt_context() {
   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
@@ -113,5 +121,18 @@ prompt_context() {
   fi
 }
 
+function mkcd {
+    if [ ! -n "$1" ]; then
+    echo "Enter a directory name"
+  elif [ -d $1 ]; then
+    echo "\`$1' already exists"
+  else
+    mkdir $1 && cd $1
+  fi
+}
+
+
 alias vim="nvim"
 alias oldvim="vim"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
