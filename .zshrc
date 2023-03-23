@@ -131,7 +131,7 @@ function mkcd {
   fi
 }
 
-
+alias cat="batcat"
 alias vim="nvim"
 alias oldvim="vim"
 
