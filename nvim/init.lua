@@ -1,12 +1,10 @@
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
-local Plug = vim.fn['plug#']
+local plugins = require('plugins')
 
 -- Standard Vim / Neovim settings
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 vim.o.mouse = 'v'
 vim.o.number = true
--- vim.o.nocompatible = true
 vim.o.showmatch = true
 vim.o.ignorecase = true
 vim.o.hlsearch = true
@@ -17,45 +15,27 @@ vim.o.expandtab = true
 vim.o.shiftwidth = 4
 vim.o.autoindent = true
 vim.o.wildmode = 'longest,list'
-vim.o.cc = 80
 vim.o.syntax = 'on'
 vim.o.mouse = 'a'
 vim.o.clipboard = 'unnamedplus'
 vim.o.cursorline = true
 vim.o.ttyfast = true
+vim.o.signcolumn = 'yes'
 
-vim.call('plug#begin', '~/.config/nvim/plugged')
-  Plug 'ryanoasis/vim-devicons'
-  Plug 'SirVer/ultisnips'
-  Plug 'honza/vim-snippets'
-  Plug 'nvim-tree/nvim-tree.lua'
-  Plug 'preservim/nerdcommenter'
-  Plug 'mhinz/vim-startify'
-  Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
---  Plug('kaicataldo/material.vim', { branch = 'main' })
-  Plug 'EdenEast/nightfox.nvim'
-  Plug 'mattn/emmet-vim'
-  Plug 'sigmasd/deno-nvim'
-  Plug 'mustache/vim-mustache-handlebars'
-  Plug 'voldikss/vim-floaterm'
-  Plug 'nvim-tree/nvim-web-devicons'
-  Plug 'ziglang/zig.vim'
-  Plug 'nvim-lualine/lualine.nvim'
-  Plug 'm4xshen/autoclose.nvim'
-  Plug 'nvim-lua/plenary.nvim'
-  Plug 'kdheepak/tabline.nvim'
-  Plug 'neovim/nvim-lsp'
-  Plug 'glepnir/lspsaga.nvim'
-  Plug('nvim-telescope/telescope.nvim', { ['tag'] = '0.1.1' })
-  Plug('L3MON4D3/LuaSnip', {['tag'] = 'v1.*', ['do'] = 'make install_jsregexp'})
-  Plug 'hrsh7th/cmp-nvim-lsp'
-  Plug 'hrsh7th/cmp-buffer'
-  Plug 'hrsh7th/cmp-path'
-  Plug 'hrsh7th/cmp-cmdline'
-  Plug 'hrsh7th/nvim-cmp'
-  Plug 'saecki/crates.nvim'
-  Plug 'saadparwaiz1/cmp_luasnip'
-vim.call('plug#end')
+-- Install lazy
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+require('lazy').setup(plugins)
 
 -- Terminal GUI colours
 if vim.call('has', 'termguicolors') then
@@ -63,24 +43,29 @@ if vim.call('has', 'termguicolors') then
 end
 
 -- Theme
---vim.g.material_theme_style = 'darker'
-vim.cmd('colorscheme nightfox')
+vim.cmd('colorscheme catppuccin')
 
 -- Plugin config
 require('keys')
-require('comp')
---require('coc')
-require('lualine').setup {
-    options = {
-        theme = 'auto',
-        disabled_filetypes = { 'NvimTree' }
-    }
-}
-require('tabline').setup {
-    enable = true,
-}
-require("autoclose").setup()
-require("nvim-tree").setup()
+
+vim.fn.sign_define(
+  "LspDiagnosticsSignError",
+  { texthl = "LspDiagnosticsSignError", text = "", numhl = "LspDiagnosticsSignError" }
+)
+vim.fn.sign_define(
+  "LspDiagnosticsSignWarning",
+  { texthl = "LspDiagnosticsSignWarning", text = "", numhl = "LspDiagnosticsSignWarning" }
+)
+vim.fn.sign_define(
+  "LspDiagnosticsSignHint",
+  { texthl = "LspDiagnosticsSignHint", text = "", numhl = "LspDiagnosticsSignHint" }
+)
+vim.fn.sign_define(
+  "LspDiagnosticsSignInformation",
+  { texthl = "LspDiagnosticsSignInformation", text = "", numhl = "LspDiagnosticsSignInformation" }
+)
+
+require("nvim-tree").setup{}
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
@@ -90,68 +75,46 @@ require'nvim-treesitter.configs'.setup {
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
-}
-
-require('crates').setup()
-
-local nvim_lsp = require("lspconfig")
-nvim_lsp.denols.setup {
-    root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
-    on_attach = on_attach,
-    init_options = {
-        lint = true
-    }
-}
-nvim_lsp.tsserver.setup {
-    root_dir = nvim_lsp.util.root_pattern("package.json"),
-    on_attach = on_attach,
-    single_file_support = false
-}
-nvim_lsp.svelte.setup {}
-nvim_lsp.rust_analyzer.setup({
-    on_attach=on_attach,
-    settings = {
-        ["rust-analyzer"] = {
-            imports = {
-                granularity = {
-                    group = "module",
-                },
-                prefix = "self",
-            },
-            cargo = {
-                buildScripts = {
-                    enable = true,
-                },
-            },
-            procMacro = {
-                enable = true
-            },
-        }
-    }
-})
-util = require "lspconfig/util"
-nvim_lsp.gopls.setup {
-    cmd = {"gopls", "serve"},
-    filetypes = {"go", "gomod"},
-    root_dir = util.root_pattern("go.work", "go.mod", ".git"),
-    settings = {
-      gopls = {
-        analyses = {
-          unusedparams = true,
-        },
-        staticcheck = true,
-      },
-    },
+  autotag = {
+      enabled = true,
   }
+}
 
-
-require('deno-nvim').setup {}
-
-local saga = require('lspsaga')
-saga.setup {}
-
+local lsp = require('lsp')
 
 -- Split panes config
 vim.cmd('set splitright')
 vim.cmd('set splitbelow')
 
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go,*.svelte,*.html,*.js,*.ts,*.tsx,*.jsx",
+  callback = function()
+    local params = vim.lsp.util.make_range_params()
+    params.context = {only = {"source.organizeImports"}}
+    -- buf_request_sync defaults to a 1000ms timeout. Depending on your
+    -- machine and codebase, you may want longer. Add an additional
+    -- argument after params if you find that you have to write the file
+    -- twice for changes to be saved.
+    -- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
+    for cid, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then
+          local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+          vim.lsp.util.apply_workspace_edit(r.edit, enc)
+        end
+      end
+    end
+    vim.lsp.buf.format({async = false})
+  end
+})
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = false
+    }
+)
+
+vim.cmd [[au BufNewFile,BufRead *.njk set ft=jinja]]
+
+vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
