@@ -32,7 +32,12 @@ nvim_lsp.volar.setup {
 nvim_lsp.svelte.setup {
     capabilities = capabilities,
 }
+
 nvim_lsp.zls.setup {
+    capabilities = capabilities
+}
+
+nvim_lsp.lua_ls.setup {
     capabilities = capabilities
 }
 

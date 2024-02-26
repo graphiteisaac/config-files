@@ -6,23 +6,37 @@ local plugins = {
         'preservim/nerdcommenter'
     },
     {
-        'mhinz/vim-startify'
+        'folke/trouble.nvim'
     },
     {
-        'folke/todo-comments.nvim'
+        'goolord/alpha-nvim',
+        dependencies = {
+            'nvim-tree/nvim-web-devicons',
+            'nvim-lua/plenary.nvim'
+        },
+        init = function()
+            require 'alpha'.setup(require 'alpha.themes.theta'.config)
+        end
     },
     {
         'williamboman/mason.nvim',
-        opts = function()
-            require("mason").setup {}
+        config = function()
+            require('mason').setup {}
         end
     },
     {
         'nvim-treesitter/nvim-treesitter',
-        build = ':TSUpdate'
+        build = ':TSUpdate',
+        opts = {
+            options = {
+                highlight = {
+                    disable = { 'help', 'doc' },
+                }
+            }
+        }
     },
     {
-        'catppuccin/nvim', 
+        'catppuccin/nvim',
         name = 'catppuccin'
     },
     {
@@ -32,21 +46,38 @@ local plugins = {
         'mustache/vim-mustache-handlebars'
     },
     {
-        'voldikss/vim-floaterm'
-    },
-    {
         'nvim-tree/nvim-web-devicons'
     },
     {
         'ziglang/zig.vim'
     },
     {
+        'akinsho/bufferline.nvim',
+        after = "catppuccin",
+        config = function()
+            require("bufferline").setup {
+                highlights = require("catppuccin.groups.integrations.bufferline").get(),
+                options = {
+                    diagnostics = 'nvim_lsp',
+                    separator_style = 'slant',
+                    hover = {
+                        enabled = true,
+                    }
+                }
+            }
+        end,
+        version = "*",
+        dependencies = { 'nvim-tree/nvim-web-devicons', 'catppuccin/nvim' },
+    },
+    {
         'nvim-lualine/lualine.nvim',
         opts = {
             options = {
-                theme = 'auto',
+                theme = 'catppuccin',
                 disabled_filetypes = { 'NvimTree' }
-            }
+            },
+            tabline = {},
+            winbar = {}
         }
     },
     {
@@ -56,83 +87,26 @@ local plugins = {
         'nvim-lua/plenary.nvim'
     },
     {
-        'neovim/nvim-lsp',
-        config = function()
-            local capabilities = require('cmp_nvim_lsp').default_capabilities()
-            local nvim_lsp = require("lspconfig")
-            nvim_lsp.clangd.setup {
-                capabilities = capabilities,
-                on_attach = on_attach,
-            }
-            nvim_lsp.denols.setup {
-                capabilities = capabilities,
-                root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
-                on_attach = on_attach,
-                ---init_options = {
-                ---   lint = true
-                ---}
-            }
-            nvim_lsp.tsserver.setup {
-                capabilities = capabilities,
-                root_dir = nvim_lsp.util.root_pattern("package.json"),
-                on_attach = on_attach,
-                single_file_support = false
-            }
-
-            --- sqls
-            nvim_lsp.sqlls.setup {
-                capabilities = capabilities,
-                on_attach = on_attach,
-            }
-
-            --- Frontend servers
-            nvim_lsp.volar.setup {
-                capabilities = capabilities,
-            }
-            nvim_lsp.svelte.setup {
-                capabilities = capabilities,
-            }
-            nvim_lsp.zls.setup {
-                capabilities = capabilities
-            }
-
-            util = require "lspconfig/util"
-            nvim_lsp.gopls.setup {
-                capabilities = capabilities,
-                cmd = {"gopls", "serve"},
-                filetypes = {"go", "gomod"},
-                root_dir = util.root_pattern("go.work", "go.mod", ".git"),
-                settings = {
-                  gopls = {
-                    analyses = {
-                      unusedparams = true,
-                    },
-                    staticcheck = true,
-                  },
-                },
-            }
-        end
+        'neovim/nvim-lsp'
     },
     {
         'glepnir/lspsaga.nvim',
-        opts = function()
-		    require('lspsaga').setup {
-	    		error_sign = '', -- 
-		        warn_sign = '',
-		        hint_sign = '',
-    		    infor_sign = '',
-	        }
-    	end,
-	    dependencies = {
-		    'nvim-treesitter/nvim-treesitter',
-        	'nvim-tree/nvim-web-devicons'
-    	}
+        opts = {
+            error_sign = '', -- 
+            warn_sign = '',
+            hint_sign = '',
+            infor_sign = '',
+        },
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+            'nvim-tree/nvim-web-devicons'
+        }
     },
     {
         'windwp/nvim-autopairs'
-    }, 
+    },
     {
-        'nvim-telescope/telescope.nvim', 
+        'nvim-telescope/telescope.nvim',
         tag = '0.1.5'
     },
     {
@@ -146,7 +120,7 @@ local plugins = {
             },
             {
                 'saadparwaiz1/cmp_luasnip'
-            }, 
+            },
             {
                 'hrsh7th/cmp-buffer'
             },
@@ -157,7 +131,7 @@ local plugins = {
                 'hrsh7th/cmp-cmdline'
             },
         },
-        config = function()
+        init = function()
             local cmp = require('cmp')
 
             cmp.setup({
@@ -191,17 +165,17 @@ local plugins = {
     {
         'lepture/vim-jinja'
     },
-    {
+    --[[{
         'simrat39/rust-tools.nvim',
         opts = {
             server = {
-            on_attach = function(_, bufnr)
-              -- Hover actions
-              vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-              -- Code action groups
-              vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-            end,
-          },
+                on_attach = function(_, bufnr)
+                    -- Hover actions
+                    vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+                    -- Code action groups
+                    vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+                end,
+            },
         }
 
     },
@@ -219,10 +193,9 @@ local plugins = {
                 h1 = { underline = true },
             }
         }
-
-    },
+    },]]
     {
-        'olexsmir/gopher.nvim', 
+        'olexsmir/gopher.nvim',
         build = ':GoInstallDeps'
     }
 }

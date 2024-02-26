@@ -19,6 +19,7 @@ map('n', '<Space>J', ':Lspsaga goto_type_definition<CR>')
 map('n', '<Space>i', ':Lspsaga incoming_calls<CR>')
 map('n', '<leader>]', ':Lspsaga show_line_diagnostics<CR>')
 map('n', '<A-CR>', ':Lspsaga code_action<CR>')
+map('n', '<leader>t', ':TroubleToggle<CR>')
 
 map('n', 'F', ':lua vim.lsp.buf.format()')
 local builtin = require('telescope.builtin')
