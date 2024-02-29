@@ -41,18 +41,22 @@ nvim_lsp.lua_ls.setup {
     capabilities = capabilities
 }
 
+nvim_lsp.v_analyzer.setup {
+    capabilities = capabilities
+}
+
 util = require "lspconfig/util"
 nvim_lsp.gopls.setup {
     capabilities = capabilities,
-    cmd = {"gopls", "serve"},
-    filetypes = {"go", "gomod"},
+    cmd = { "gopls", "serve" },
+    filetypes = { "go", "gomod" },
     root_dir = util.root_pattern("go.work", "go.mod", ".git"),
     settings = {
-      gopls = {
-        analyses = {
-          unusedparams = true,
+        gopls = {
+            analyses = {
+                unusedparams = true,
+            },
+            staticcheck = true,
         },
-        staticcheck = true,
-      },
     },
 }

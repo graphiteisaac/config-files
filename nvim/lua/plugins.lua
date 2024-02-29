@@ -9,6 +9,19 @@ local plugins = {
         'folke/trouble.nvim'
     },
     {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        init = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 300
+        end,
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        }
+    },
+    {
         'goolord/alpha-nvim',
         dependencies = {
             'nvim-tree/nvim-web-devicons',
@@ -49,9 +62,6 @@ local plugins = {
         'nvim-tree/nvim-web-devicons'
     },
     {
-        'ziglang/zig.vim'
-    },
-    {
         'akinsho/bufferline.nvim',
         after = "catppuccin",
         config = function()
@@ -71,14 +81,86 @@ local plugins = {
     },
     {
         'nvim-lualine/lualine.nvim',
-        opts = {
-            options = {
-                theme = 'catppuccin',
-                disabled_filetypes = { 'NvimTree' }
-            },
-            tabline = {},
-            winbar = {}
-        }
+        opts = function()
+            function GetCurrentDiagnostic()
+                bufnr = 0
+                line_nr = vim.api.nvim_win_get_cursor(0)[1] - 1
+                opts = { ["lnum"] = line_nr }
+
+                local line_diagnostics = vim.diagnostic.get(bufnr, opts)
+                if vim.tbl_isempty(line_diagnostics) then
+                    return
+                end
+
+                local best_diagnostic = nil
+
+                for _, diagnostic in ipairs(line_diagnostics) do
+                    if
+                        best_diagnostic == nil or diagnostic.severity < best_diagnostic.severity
+                    then
+                        best_diagnostic = diagnostic
+                    end
+                end
+
+                return best_diagnostic
+            end
+
+            function GetCurrentDiagnosticString()
+                local diagnostic = GetCurrentDiagnostic()
+
+                if not diagnostic or not diagnostic.message then
+                    return
+                end
+
+                local message = vim.split(diagnostic.message, "\n")[1]
+                local max_width = vim.api.nvim_win_get_width(0) - 35
+
+                if string.len(message) < max_width then
+                    return message
+                else
+                    return string.sub(message, 1, max_width) .. "..."
+                end
+            end
+
+            return {
+                options = {
+                    theme = 'catppuccin',
+                    disabled_filetypes = { 'NvimTree' }
+                },
+                tabline = {},
+                winbar = {},
+                sections = {
+                    lualine_a = { "mode" },
+                    lualine_b = {
+                        "diagnostics",
+                    },
+                    lualine_c = { "GetCurrentDiagnosticString()" },
+                    lualine_y = {
+                        {
+                            function()
+                                local msg = 'None'
+                                local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+                                local clients = vim.lsp.get_active_clients()
+                                if next(clients) == nil then
+                                    return msg
+                                end
+                                for _, client in ipairs(clients) do
+                                    local filetypes = client.config.filetypes
+                                    if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+                                        return client.name
+                                    end
+                                end
+                                return msg
+                            end,
+                            icon = '󰈙',
+                            color = { gui = 'bold' },
+                        }
+                    },
+                    lualine_x = {},
+                    lualine_z = { "location" },
+                }
+            }
+        end
     },
     {
         'windwp/nvim-ts-autotag'
@@ -92,10 +174,12 @@ local plugins = {
     {
         'glepnir/lspsaga.nvim',
         opts = {
-            error_sign = '', -- 
-            warn_sign = '',
-            hint_sign = '',
-            infor_sign = '',
+            options = {
+                error_sign = '', -- 
+                warn_sign = '',
+                hint_sign = '',
+                infor_sign = ''
+            }
         },
         dependencies = {
             'nvim-treesitter/nvim-treesitter',
