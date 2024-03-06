@@ -4,25 +4,29 @@ nvim_lsp.clangd.setup {
     capabilities = capabilities,
     on_attach = on_attach,
 }
+
 nvim_lsp.denols.setup {
     capabilities = capabilities,
     root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
-    on_attach = on_attach,
-    ---init_options = {
-    ---   lint = true
-    ---}
+    init_options = {
+        lint = true
+    }
 }
+
 nvim_lsp.tsserver.setup {
     capabilities = capabilities,
     root_dir = nvim_lsp.util.root_pattern("package.json"),
-    on_attach = on_attach,
     single_file_support = false
 }
 
 --- sqls
 nvim_lsp.sqlls.setup {
     capabilities = capabilities,
-    on_attach = on_attach,
+}
+
+--- rust_analyzer
+nvim_lsp.rust_analyzer.setup {
+    capabilities = capabilities,
 }
 
 --- Frontend servers
@@ -45,7 +49,7 @@ nvim_lsp.v_analyzer.setup {
     capabilities = capabilities
 }
 
-util = require "lspconfig/util"
+local util = require "lspconfig/util"
 nvim_lsp.gopls.setup {
     capabilities = capabilities,
     cmd = { "gopls", "serve" },

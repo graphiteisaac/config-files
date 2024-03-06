@@ -25,21 +25,21 @@ vim.o.signcolumn = 'yes'
 -- Install lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 require('lazy').setup(plugins)
 
 -- Terminal GUI colours
 if vim.call('has', 'termguicolors') then
-  vim.o.termguicolors=true
+    vim.o.termguicolors = true
 end
 
 -- Theme
@@ -48,36 +48,19 @@ vim.cmd('colorscheme catppuccin')
 -- Plugin config
 require('keys')
 
-vim.fn.sign_define(
-  "LspDiagnosticsSignError",
-  { texthl = "LspDiagnosticsSignError", text = "", numhl = "LspDiagnosticsSignError" }
-)
-vim.fn.sign_define(
-  "LspDiagnosticsSignWarning",
-  { texthl = "LspDiagnosticsSignWarning", text = "", numhl = "LspDiagnosticsSignWarning" }
-)
-vim.fn.sign_define(
-  "LspDiagnosticsSignHint",
-  { texthl = "LspDiagnosticsSignHint", text = "", numhl = "LspDiagnosticsSignHint" }
-)
-vim.fn.sign_define(
-  "LspDiagnosticsSignInformation",
-  { texthl = "LspDiagnosticsSignInformation", text = "", numhl = "LspDiagnosticsSignInformation" }
-)
-
-require("nvim-tree").setup{}
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-  autotag = {
-      enabled = true,
-  }
+require("nvim-tree").setup {}
+require 'nvim-treesitter.configs'.setup {
+    highlight = {
+        enable = true,
+        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+        -- Using this option may slow down your editor, and you may see some duplicate highlights.
+        -- Instead of true it can also be a list of languages
+        additional_vim_regex_highlighting = false,
+    },
+    autotag = {
+        enabled = true,
+    }
 }
 
 local lsp = require('lsp')
@@ -87,26 +70,26 @@ vim.cmd('set splitright')
 vim.cmd('set splitbelow')
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.go,*.svelte,*.html,*.js,*.ts,*.tsx,*.jsx",
-  callback = function()
-    local params = vim.lsp.util.make_range_params()
-    params.context = {only = {"source.organizeImports"}}
-    -- buf_request_sync defaults to a 1000ms timeout. Depending on your
-    -- machine and codebase, you may want longer. Add an additional
-    -- argument after params if you find that you have to write the file
-    -- twice for changes to be saved.
-    -- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
-    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
-    for cid, res in pairs(result or {}) do
-      for _, r in pairs(res.result or {}) do
-        if r.edit then
-          local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
-          vim.lsp.util.apply_workspace_edit(r.edit, enc)
+    pattern = "*.go,*.svelte,*.html,*.js,*.ts,*.tsx,*.jsx",
+    callback = function()
+        local params = vim.lsp.util.make_range_params()
+        params.context = { only = { "source.organizeImports" } }
+        -- buf_request_sync defaults to a 1000ms timeout. Depending on your
+        -- machine and codebase, you may want longer. Add an additional
+        -- argument after params if you find that you have to write the file
+        -- twice for changes to be saved.
+        -- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+        local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
+        for cid, res in pairs(result or {}) do
+            for _, r in pairs(res.result or {}) do
+                if r.edit then
+                    local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+                    vim.lsp.util.apply_workspace_edit(r.edit, enc)
+                end
+            end
         end
-      end
+        vim.lsp.buf.format({ async = false })
     end
-    vim.lsp.buf.format({async = false})
-  end
 })
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -116,5 +99,21 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 )
 
 vim.cmd [[au BufNewFile,BufRead *.njk set ft=jinja]]
-
 vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
+
+vim.fn.sign_define(
+    "DiagnosticSignError",
+    { texthl = "DiagnosticSignError", text = "", numhl = "DiagnosticSignError" }
+)
+vim.fn.sign_define(
+    "DiagnosticSignWarn",
+    { texthl = "DiagnosticSignWarn", text = "", numhl = "DiagnosticSignWarn" }
+)
+vim.fn.sign_define(
+    "DiagnosticSignHint",
+    { texthl = "DiagnosticSignHint", text = "󰋼", numhl = "DiagnosticSignHint" }
+)
+vim.fn.sign_define(
+    "DiagnosticSignInfo",
+    { texthl = "DiagnosticSignInfo", text = "", numhl = "DiagnosticSignInfo" }
+)

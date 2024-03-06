@@ -1,12 +1,30 @@
 local plugins = {
     {
-        'nvim-tree/nvim-tree.lua'
+        'nvim-tree/nvim-tree.lua',
+        event = 'VeryLazy',
     },
     {
-        'preservim/nerdcommenter'
+        'folke/trouble.nvim',
+        event = 'VeryLazy'
     },
     {
-        'folke/trouble.nvim'
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        }
+    },
+    {
+        'numToStr/Comment.nvim',
+        init = function()
+            require('Comment').setup {}
+        end,
+        lazy = false,
+    },
+    {
+        'stevearc/dressing.nvim'
     },
     {
         "folke/which-key.nvim",
@@ -82,59 +100,99 @@ local plugins = {
     {
         'nvim-lualine/lualine.nvim',
         opts = function()
-            function GetCurrentDiagnostic()
-                bufnr = 0
-                line_nr = vim.api.nvim_win_get_cursor(0)[1] - 1
-                opts = { ["lnum"] = line_nr }
+            local lualine_require = require('lualine_require')
+            local modules = lualine_require.lazy_require {
+                utils = 'lualine.utils.utils',
+                highlight = 'lualine.highlight'
+            }
 
-                local line_diagnostics = vim.diagnostic.get(bufnr, opts)
-                if vim.tbl_isempty(line_diagnostics) then
-                    return
-                end
+            local diagnostics_message = require("lualine.component"):extend()
 
-                local best_diagnostic = nil
+            diagnostics_message.default = {
+                colors = {
+                    error = modules.utils.extract_color_from_hllist(
+                        { "fg", "sp" },
+                        { "DiagnosticError" },
+                        "#e32636"
+                    ),
+                    warning = modules.utils.extract_color_from_hllist(
+                        { "fg", "sp" },
+                        { "DiagnosticWarn" },
+                        "#ffa500"
+                    ),
+                    info = modules.utils.extract_color_from_hllist(
+                        { "fg", "sp" },
+                        { "DiagnosticInfo" },
+                        "#ffffff"
+                    ),
+                    hint = modules.utils.extract_color_from_hllist(
+                        { "fg", "sp" },
+                        { "DiagnosticHint" },
+                        "#273faf"
+                    ),
+                },
+            }
 
-                for _, diagnostic in ipairs(line_diagnostics) do
-                    if
-                        best_diagnostic == nil or diagnostic.severity < best_diagnostic.severity
-                    then
-                        best_diagnostic = diagnostic
-                    end
-                end
 
-                return best_diagnostic
+            function diagnostics_message:init(options)
+                diagnostics_message.super:init(options)
+                self.options.colors = {}
+
+                self.highlights = { error = "", warn = "", info = "", hint = "" }
+                self.highlights.error = modules.highlight.create_component_highlight_group(
+                    { fg = "DiagnosticSignError" },
+                    "diagnostics_message_error",
+                    self.options
+                )
+                self.highlights.warn = modules.highlight.create_component_highlight_group(
+                    { fg = "DiagnosticSignWarn" },
+                    "diagnostics_message_warn",
+                    self.options
+                )
+                self.highlights.info = modules.highlight.create_component_highlight_group(
+                    { fg = "DiagnosticSignInfo" },
+                    "diagnostics_message_info",
+                    self.options
+                )
+                self.highlights.hint = modules.highlight.create_component_highlight_group(
+                    { fg = "DiagnosticSignHint" },
+                    "diagnostics_message_hint",
+                    self.options
+                )
             end
 
-            function GetCurrentDiagnosticString()
-                local diagnostic = GetCurrentDiagnostic()
-
-                if not diagnostic or not diagnostic.message then
-                    return
-                end
-
-                local message = vim.split(diagnostic.message, "\n")[1]
-                local max_width = vim.api.nvim_win_get_width(0) - 35
-
-                if string.len(message) < max_width then
-                    return message
+            function diagnostics_message:update_status()
+                local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
+                local diagnostics = vim.diagnostic.get(0, { lnum = r - 1 })
+                if #diagnostics > 0 then
+                    local diag = diagnostics[1]
+                    for _, d in ipairs(diagnostics) do
+                        if d.severity < diag.severity then
+                            diagnostics = d
+                        end
+                    end
+                    local icons = { "", "󰋼", "", "" }
+                    local hl = { self.highlights.error, self.highlights.warn, self.highlights.info, self.highlights.hint }
+                    return modules.highlight.component_format_highlight(hl[diag.severity]) ..
+                        icons[diag.severity] .. " " .. diag.message
                 else
-                    return string.sub(message, 1, max_width) .. "..."
+                    return ""
                 end
             end
 
             return {
                 options = {
                     theme = 'catppuccin',
+                    section_separators = { left = '', right = '' },
+                    component_separators = { left = '', right = '' },
                     disabled_filetypes = { 'NvimTree' }
                 },
                 tabline = {},
                 winbar = {},
                 sections = {
                     lualine_a = { "mode" },
-                    lualine_b = {
-                        "diagnostics",
-                    },
-                    lualine_c = { "GetCurrentDiagnosticString()" },
+                    lualine_b = { "diagnostics" },
+                    lualine_c = { diagnostics_message },
                     lualine_y = {
                         {
                             function()
@@ -154,7 +212,8 @@ local plugins = {
                             end,
                             icon = '󰈙',
                             color = { gui = 'bold' },
-                        }
+                        },
+                        { 'filetype' }
                     },
                     lualine_x = {},
                     lualine_z = { "location" },
@@ -169,18 +228,27 @@ local plugins = {
         'nvim-lua/plenary.nvim'
     },
     {
-        'neovim/nvim-lsp'
+        'neovim/nvim-lsp',
+        config = function()
+            require('lsp')
+        end
     },
     {
         'glepnir/lspsaga.nvim',
-        opts = {
-            options = {
-                error_sign = '', -- 
+        config = function()
+            require('lspsaga').setup({
+                error_sign = '',
                 warn_sign = '',
                 hint_sign = '',
-                infor_sign = ''
-            }
-        },
+                info_sign = '',
+                lightbulb = {
+                    virtual_text = false
+                },
+                ui = {
+                    code_action = ''
+                }
+            })
+        end,
         dependencies = {
             'nvim-treesitter/nvim-treesitter',
             'nvim-tree/nvim-web-devicons'
@@ -232,7 +300,8 @@ local plugins = {
                     ['<C-f>'] = cmp.mapping.scroll_docs(4),
                     ['<C-Space>'] = cmp.mapping.complete(),
                     ['<C-e>'] = cmp.mapping.abort(),
-                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+                    ['<CR>'] = cmp.mapping.confirm({ select = false }),
                 }),
                 sources = cmp.config.sources({
                     { name = 'nvim_lsp' },
