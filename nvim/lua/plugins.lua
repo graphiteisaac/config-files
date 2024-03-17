@@ -137,8 +137,8 @@ local plugins = {
             function diagnostics_message:init(options)
                 diagnostics_message.super:init(options)
                 self.options.colors = {}
+                self.highlights = { error = "DiagnosticSignError", warn = "DiagnosticSignWarn", info = "DiagnosticSignInfo", hint = "DiagnosticSignHint" }
 
-                self.highlights = { error = "", warn = "", info = "", hint = "" }
                 self.highlights.error = modules.highlight.create_component_highlight_group(
                     { fg = "DiagnosticSignError" },
                     "diagnostics_message_error",
@@ -192,7 +192,7 @@ local plugins = {
                 sections = {
                     lualine_a = { "mode" },
                     lualine_b = { "diagnostics" },
-                    lualine_c = { diagnostics_message },
+                    lualine_c = { --[[diagnostics_message]] },
                     lualine_y = {
                         {
                             function()

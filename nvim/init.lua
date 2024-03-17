@@ -63,8 +63,6 @@ require 'nvim-treesitter.configs'.setup {
     }
 }
 
-local lsp = require('lsp')
-
 -- Split panes config
 vim.cmd('set splitright')
 vim.cmd('set splitbelow')
