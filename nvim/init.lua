@@ -1,5 +1,3 @@
-local plugins = require('plugins')
-
 -- Standard Vim / Neovim settings
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -35,7 +33,7 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
-require('lazy').setup(plugins)
+require('lazy').setup('plugins')
 
 -- Terminal GUI colours
 if vim.call('has', 'termguicolors') then
@@ -48,27 +46,12 @@ vim.cmd('colorscheme catppuccin')
 -- Plugin config
 require('keys')
 
-require("nvim-tree").setup {}
-require 'nvim-treesitter.configs'.setup {
-    highlight = {
-        enable = true,
-        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-        -- Using this option may slow down your editor, and you may see some duplicate highlights.
-        -- Instead of true it can also be a list of languages
-        additional_vim_regex_highlighting = false,
-    },
-    autotag = {
-        enabled = true,
-    }
-}
-
 -- Split panes config
 vim.cmd('set splitright')
 vim.cmd('set splitbelow')
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*.go,*.svelte,*.html,*.js,*.ts,*.tsx,*.jsx",
+    pattern = "*.go,*.svelte,*.html,*.js,*.ts,*.tsx,*.jsx,*.lua",
     callback = function()
         local params = vim.lsp.util.make_range_params()
         params.context = { only = { "source.organizeImports" } }
@@ -96,8 +79,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     }
 )
 
-vim.cmd [[au BufNewFile,BufRead *.njk set ft=jinja]]
-vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
+--vim.cmd [[au BufNewFile,BufRead *.njk set ft=jinja]]
 
 vim.fn.sign_define(
     "DiagnosticSignError",
