@@ -8,7 +8,7 @@ function map(mode, lhs, rhs, opts)
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
-map('n', '<Space>t', ':NvimTreeToggle<CR>')
+-- map('n', '<Space>t', ':NvimTreeToggle<CR>')
 map('n', '<Space>d', ':Lspsaga peek_definition<CR>')
 map('n', '<Space>D', ':Lspsaga peek_type_definition<CR>')
 map('n', '<Space>j', ':Lspsaga goto_definition<CR>')
@@ -16,6 +16,7 @@ map('n', '<Space>J', ':Lspsaga goto_type_definition<CR>')
 map('n', '<Space>i', ':Lspsaga incoming_calls<CR>')
 map('n', '<leader>]', ':Lspsaga show_line_diagnostics<CR>')
 map('n', '<A-CR>', ':Lspsaga code_action<CR>')
+map('n', '<leader>ca', ':Lspsaga code_action<CR>')
 map('n', '<leader>t', ':TroubleToggle<CR>')
 
 map('n', 'F', ':lua vim.lsp.buf.format()')
