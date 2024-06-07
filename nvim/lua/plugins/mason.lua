@@ -12,6 +12,11 @@ return {
         require('mason').setup()
         require('mason-lspconfig').setup()
 
+        -- FIXME: check if Gleam is installed
+        require('lspconfig').gleam.setup {
+            capabilities = capabilities
+        }
+
         require('mason-lspconfig').setup_handlers {
             function(server)
                 require('lspconfig')[server].setup {

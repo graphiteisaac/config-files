@@ -1,5 +1,5 @@
 -- keys.lua
-function map(mode, lhs, rhs, opts)
+local function map(mode, lhs, rhs, opts)
     local options = { noremap = true }
     if opts then
         options = vim.tbl_extend("force", options, opts)
@@ -15,9 +15,13 @@ map('n', '<Space>j', ':Lspsaga goto_definition<CR>')
 map('n', '<Space>J', ':Lspsaga goto_type_definition<CR>')
 map('n', '<Space>i', ':Lspsaga incoming_calls<CR>')
 map('n', '<leader>]', ':Lspsaga show_line_diagnostics<CR>')
-map('n', '<A-CR>', ':Lspsaga code_action<CR>')
 map('n', '<leader>ca', ':Lspsaga code_action<CR>')
 map('n', '<leader>t', ':TroubleToggle<CR>')
+-- Disable unenlightened arrow keys in normal mode
+map('n', '<Up>', '<Nop>')
+map('n', '<Left>', '<Nop>')
+map('n', '<Right>', '<Nop>')
+map('n', '<Down>', '<Nop>')
 
 map('n', 'F', ':lua vim.lsp.buf.format()')
 local builtin = require('telescope.builtin')

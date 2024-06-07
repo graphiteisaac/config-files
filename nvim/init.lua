@@ -19,6 +19,7 @@ vim.o.clipboard = 'unnamedplus'
 vim.o.cursorline = true
 vim.o.ttyfast = true
 vim.o.signcolumn = 'yes'
+vim.o.backupcopy = 'yes'
 
 -- Install lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -51,7 +52,7 @@ vim.cmd('set splitright')
 vim.cmd('set splitbelow')
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*.go,*.svelte,*.html,*.js,*.ts,*.tsx,*.jsx,*.lua",
+    pattern = "*.go,*.svelte,*.html,*.js,*.ts,*.tsx,*.jsx,*.lua,*.rs",
     callback = function()
         local params = vim.lsp.util.make_range_params()
         params.context = { only = { "source.organizeImports" } }

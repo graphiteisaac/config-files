@@ -1,0 +1,120 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """\
+[╭╴](fg:surface2)\
+$directory\
+(\
+    $git_branch\
+    $git_status\
+)\
+$cmd_duration $fill (\
+    $gleam\
+    $python\
+    $c\
+    $golang\
+    $rust\
+    $conda\
+    $nodejs\
+) 
+[╰─](fg:surface2)$character\
+"""
+
+# Disables the blank line at the start of the prompt
+add_newline = true
+
+palette = "catppuccin_mocha"
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+[fill]
+symbol = ' '
+
+[character]
+success_symbol = "[](fg:overlay1)"
+error_symbol = "[](fg:maroon)"
+
+[directory]
+format = " [](fg:peach)[  $path ]($style)[$read_only]($read_only_style)[](fg:peach)"
+truncation_length = 2
+style = "fg:crust bg:peach"
+read_only_style = "fg:crust bg:peach"
+before_repo_root_style = "fg:curst bg:peach"
+truncation_symbol = "…/"
+truncate_to_repo = true
+read_only ="  "
+
+[cmd_duration]
+format = " [](fg:lavender)[$duration]($style)[](fg:lavender)"
+style = "fg:crust bg:lavender"
+min_time = 500
+
+[git_branch]
+format = " [](fg:surface1)[$symbol$branch](fg:subtext1 bg:surface1)"
+symbol = " "
+
+[git_status]
+format = "[ $all_status$ahead_behind](bg:surface1 fg:maroon)[](fg:surface1)"
+
+[docker_context]
+disabled=true
+symbol = " "
+
+[package]
+disabled=true
+
+[nodejs]
+format = "[ ](fg:green)[$symbol$version]($style)[](fg:green)"
+style = "bg:green fg:crust"
+symbol = " "
+version_format = "${raw}"
+disabled = false
+
+[golang]
+format = "[ ](fg:sky)[$symbol$version](bg:sky fg:crust)[](fg:sky)"
+symbol = " "
+version_format = "${raw}"
+disabled = false
+
+[rust]
+format = "[ ](fg:maroon)[$symbol$version](bg:maroon fg:crust)[](fg:maroon)"
+symbol = " "
+version_format = "${raw}"
+disabled = false
+
+[gleam]
+format = "[ ](fg:pink)[$symbol$version]($style)[](fg:pink)"
+style = "bg:pink fg:crust"
+symbol = " "
+disabled = false
+
+[c]
+format = "[ ](fg:clang)[$symbol($version(-$name) )](bg:clang fg:text_color)[](fg:clang)"
+symbol = " "
+version_format = "${raw}"
+disabled=true
