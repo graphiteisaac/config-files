@@ -1,0 +1,1 @@
+/home/isaac/.asdf/completions/asdf.fish

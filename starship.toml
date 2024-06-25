@@ -13,7 +13,6 @@ $cmd_duration $fill (\
     $c\
     $golang\
     $rust\
-    $conda\
     $nodejs\
 ) 
 [╰─](fg:surface2)$character\
