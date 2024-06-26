@@ -12,6 +12,10 @@ alias cat="bat"
 alias vim="nvim"
 alias tmplclip="cat $1 | sed 's/{{/{ {/g' | xclip"
 
+function dsi
+    wget -q -O - "https://hub.docker.com/v2/namespaces/library/repositories/$argv/tags?page_size=100" | grep -o '"name": *"[^"]*' | grep -o '[^"]*$' | sort
+end
+
 abbr --add gst 'git status'
 abbr --add gcmsg 'git commit -m '
 abbr --add gaa 'git add --all'
