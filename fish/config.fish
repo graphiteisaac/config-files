@@ -10,7 +10,7 @@ zoxide init fish | source
 # Helpful aliases
 alias cat="bat"
 alias vim="nvim"
-alias tmplclip="cat $1 | sed 's/{{/{ {/g' | xclip"
+alias tmplclip="cat $1 | sed 's/{{/{ {/g' | xclip -sel c"
 
 function dsi
     wget -q -O - "https://hub.docker.com/v2/namespaces/library/repositories/$argv/tags?page_size=100" | grep -o '"name": *"[^"]*' | grep -o '[^"]*$' | sort

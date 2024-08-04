@@ -33,12 +33,27 @@ return {
                 }
             end,
             ["tsserver"] = function()
+                local vue_location = require('mason-registry').get_package('vue-language-server'):get_install_path()
+
                 return require('lspconfig').tsserver.setup {
                     capabilities = capabilities,
                     root_dir = util.root_pattern("package.json"),
-                    single_file_support = false
+                    single_file_support = false,
+                    init_options = {
+                        plugins = {
+                            {
+                                name = '@vue/typescript-plugin',
+                                location = vue_location,
+                                languages = { 'vue' },
+                            },
+                        },
+                    },
+                    filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
                 }
-            end
+            end,
+            ["volar"] = function ()
+                require('lspconfig').volar.setup {}
+            end,
         }
     end
 }

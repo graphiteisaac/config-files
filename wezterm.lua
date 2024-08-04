@@ -2,6 +2,7 @@ local wezterm = require('wezterm')
 
 local config = wezterm.config_builder()
 
+config.font = wezterm.font 'Maple Mono NF'
 config.color_scheme = 'Catppuccin Mocha'
 config.window_padding = {
     left = 0,
@@ -9,6 +10,8 @@ config.window_padding = {
     top = 0,
     bottom = 0
 }
+
+config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 
 config.mouse_bindings = {
     {

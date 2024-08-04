@@ -12,6 +12,7 @@ vim.o.softtabstop = 4
 vim.o.expandtab = true
 vim.o.shiftwidth = 4
 vim.o.autoindent = true
+vim.o.smartindent = true
 vim.o.wildmode = 'longest,list'
 vim.o.syntax = 'on'
 vim.o.mouse = 'a'
@@ -20,6 +21,7 @@ vim.o.cursorline = true
 vim.o.ttyfast = true
 vim.o.signcolumn = 'yes'
 vim.o.backupcopy = 'yes'
+vim.o.textwidth = 0
 
 -- Install lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -52,7 +54,7 @@ vim.cmd('set splitright')
 vim.cmd('set splitbelow')
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*.go,*.svelte,*.html,*.js,*.ts,*.tsx,*.jsx,*.lua,*.rs",
+    pattern = "*.go,*.svelte,*.js,*.ts,*.tsx,*.jsx,*.lua,*.rs",
     callback = function()
         local params = vim.lsp.util.make_range_params()
         params.context = { only = { "source.organizeImports" } }

@@ -100,6 +100,7 @@ return {
                 lualine_a = { "mode" },
                 lualine_b = { "diagnostics" },
                 lualine_c = { --[[diagnostics_message]] },
+                lualine_x = { },
                 lualine_y = {
                     {
                         function()
@@ -112,7 +113,7 @@ return {
                             for _, client in ipairs(clients) do
                                 local filetypes = client.config.filetypes
                                 if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-                                    return client.name
+                                    return client.name 
                                 end
                             end
                             return msg
@@ -122,7 +123,6 @@ return {
                     },
                     { 'filetype' }
                 },
-                lualine_x = {},
                 lualine_z = { "location" },
             }
         }
