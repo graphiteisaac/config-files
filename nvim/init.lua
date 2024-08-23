@@ -31,10 +31,10 @@ if vim.call('has', 'termguicolors') then
 end
 
 -- Disable unenlightened arrow keys in normal mode
-vim.keymap.set('n', '<Up>', '<Nop', {})
-vim.keymap.set('n', '<Down>', '<Nop', {})
-vim.keymap.set('n', '<Left>', '<Nop', {})
-vim.keymap.set('n', '<Right>', '<Nop', {})
+vim.keymap.set('n', '<Up>', '<Nop>', {})
+vim.keymap.set('n', '<Down>', '<Nop>', {})
+vim.keymap.set('n', '<Left>', '<Nop>', {})
+vim.keymap.set('n', '<Right>', '<Nop>', {})
 
 -- Install lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
