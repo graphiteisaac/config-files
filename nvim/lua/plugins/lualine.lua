@@ -98,8 +98,8 @@ return {
             winbar = {},
             sections = {
                 lualine_a = { "mode" },
-                lualine_b = { "diagnostics" },
-                lualine_c = { --[[diagnostics_message]] },
+                lualine_b = { "branch", "diff" },
+                lualine_c = { "diagnostics" },
                 lualine_x = { },
                 lualine_y = {
                     {
