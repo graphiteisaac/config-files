@@ -36,11 +36,11 @@ function git_abbr_uninstall --on-event git_abbr_uninstall
     abbr -e gcob
 end
 
-# TODO should really check if go, fnm, bun, etc are installed
+# TODO: should really check if go, fnm, bun, etc are installed
 # Programming tools
 set BUN_INSTALL "$HOME/.bun"
 set DENO_INSTALL "$HOME/.deno"
-set PATH /usr/local/go/bin $HOME/go/bin $BUN_INSTALL/bin $HOME/.zig $HOME/.local/share/fnm $PATH $DENO_INSTALL/bin
+set PATH /usr/local/go/bin $HOME/go/bin $BUN_INSTALL/bin $HOME/.zig $HOME/.local/share/fnm $PATH $DENO_INSTALL/bin $HOME/.cache/rebar3/bin
 
 # fnm
 fnm env --use-on-cd | source
@@ -52,3 +52,6 @@ source ~/.asdf/asdf.fish
 # [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
+
+# dune
+set --export PATH /home/soox/.dune/bin $PATH
