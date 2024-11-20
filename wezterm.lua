@@ -2,7 +2,10 @@ local wezterm = require('wezterm')
 
 local config = wezterm.config_builder()
 
-config.font = wezterm.font 'Maple Mono NF'
+config.font = wezterm.font_with_fallback {
+    'Maple Mono NF',
+    'Jetbrains Mono',
+}
 config.color_scheme = 'Catppuccin Mocha'
 config.window_padding = {
     left = 0,
