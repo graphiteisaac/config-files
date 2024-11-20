@@ -32,10 +32,10 @@ return {
                     }
                 }
             end,
-            ["tsserver"] = function()
+            ["ts_ls"] = function()
                 local vue_location = require('mason-registry').get_package('vue-language-server'):get_install_path() .. '/node_modules/@vue/language-server'
 
-                return require('lspconfig').tsserver.setup {
+                return require('lspconfig').ts_ls.setup {
                     capabilities = capabilities,
                     root_dir = util.root_pattern("package.json"),
                     single_file_support = false,
