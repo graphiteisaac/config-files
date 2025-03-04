@@ -13,7 +13,7 @@ return {
                 javascript = { "biomejs" },
                 typecript = { "biomejs" },
                 vue = { "biomejs" },
-                go = { "golangcilint" },
+                -- go = { "golangcilint" },
             }
 
             local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
@@ -55,7 +55,15 @@ return {
             { '<leader>]', '<cmd>Lspsaga show_line_diagnostics<CR>', desc = '(LSP) Line Diagnostics' },
             { '<leader>h', '<cmd>Lspsaga hover_doc<CR>', desc = '(LSP) Hover Doc' },
             { '<leader>ca', '<cmd>Lspsaga code_action<CR>', desc = '(LSP) Code Actions' },
-            { 'F', vim.lsp.buf.format, desc = '(LSP) Format file' },
+            { 'F', function()
+                if #vim.lsp.get_clients() > 0 then
+                   vim.lsp.buf.format()
+               elseif vim.bo.formatprg ~= '' then
+                    vim.cmd('gggqG')
+               else
+                   print "No formatter specified"
+               end
+            end, desc = '(LSP) Format file' },
         },
         init = function()
             -- Cursor diagnostic window

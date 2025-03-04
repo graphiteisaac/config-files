@@ -24,6 +24,8 @@ abbr --add gm 'git merge'
 abbr --add gi 'git init'
 abbr --add gl 'git log'
 abbr --add gcob 'git checkout -b'
+abbr --add mv 'mv -vn'
+abbr --add gfmt 'gleam format'
 
 function git_abbr_uninstall --on-event git_abbr_uninstall
     abbr -e gst
