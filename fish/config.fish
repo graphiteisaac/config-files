@@ -26,6 +26,7 @@ abbr --add gl 'git log'
 abbr --add gcob 'git checkout -b'
 abbr --add mv 'mv -vn'
 abbr --add gfmt 'gleam format'
+abbr --add yoshitime 'gleam update'
 
 function git_abbr_uninstall --on-event git_abbr_uninstall
     abbr -e gst
@@ -43,6 +44,7 @@ end
 set BUN_INSTALL "$HOME/.bun"
 set DENO_INSTALL "$HOME/.deno"
 set PATH /usr/local/go/bin $HOME/go/bin $BUN_INSTALL/bin $HOME/.zig $HOME/.local/share/fnm $PATH $DENO_INSTALL/bin $HOME/.cache/rebar3/bin
+fish_add_path $HOME/.composer/vendor/bin
 
 # fnm
 fnm env --use-on-cd | source
