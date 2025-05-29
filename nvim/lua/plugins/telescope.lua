@@ -1,6 +1,6 @@
 return {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.8',
+	branch = 'master',
     keys = {
         { '<leader>ff', '<cmd>Telescope find_files<CR>', desc = '(Telescope) Find Files' },
         { '<leader>fg', '<cmd>Telescope live_grep<CR>', desc = '(Telescope) Grep' },

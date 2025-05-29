@@ -7,7 +7,7 @@ vim.o.showmatch = true
 vim.o.ignorecase = true
 vim.o.hlsearch = true
 vim.o.incsearch = true
-vim.o.tabstop = 2
+vim.o.tabstop = 4
 vim.o.softtabstop = 2
 vim.o.expandtab = false
 vim.o.shiftwidth = 2
@@ -29,6 +29,12 @@ vim.o.splitbelow = true
 if vim.call('has', 'termguicolors') then
     vim.o.termguicolors = true
 end
+
+vim.filetype.add({
+	pattern = {
+		['.djot'] = 'djot',
+	},
+})
 
 -- Disable unenlightened arrow keys in normal mode
 vim.keymap.set('n', '<Up>', '<Nop>', {})
