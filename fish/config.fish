@@ -44,7 +44,7 @@ end
 set BUN_INSTALL "$HOME/.bun"
 set DENO_INSTALL "$HOME/.deno"
 set PATH /usr/local/go/bin $HOME/go/bin $BUN_INSTALL/bin $HOME/.zig $HOME/.local/share/fnm $PATH $DENO_INSTALL/bin $HOME/.cache/rebar3/bin
-fish_add_path $HOME/.composer/vendor/bin
+fish_add_path $HOME/.composer/vendor/bin /opt/nvim-linux-x86_64/bin 
 
 # fnm
 fnm env --use-on-cd | source
@@ -59,3 +59,12 @@ source ~/.asdf/asdf.fish
 
 # dune
 set --export PATH /home/soox/.dune/bin $PATH
+
+
+# BEGIN opam configuration
+# This is useful if you're using opam as it adds:
+#   - the correct directories to the PATH
+#   - auto-completion for the opam binary
+# This section can be safely removed at any time if needed.
+test -r '/home/isaac/.opam/opam-init/init.fish' && source '/home/isaac/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
+# END opam configuration
