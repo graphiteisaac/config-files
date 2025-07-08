@@ -45,6 +45,7 @@ set BUN_INSTALL "$HOME/.bun"
 set DENO_INSTALL "$HOME/.deno"
 set PATH /usr/local/go/bin $HOME/go/bin $BUN_INSTALL/bin $HOME/.zig $HOME/.local/share/fnm $PATH $DENO_INSTALL/bin $HOME/.cache/rebar3/bin
 fish_add_path $HOME/.composer/vendor/bin /opt/nvim-linux-x86_64/bin 
+set -g fish_user_paths /home/isaac/.local/share/ponyup/bin $fish_user_paths
 
 # fnm
 fnm env --use-on-cd | source

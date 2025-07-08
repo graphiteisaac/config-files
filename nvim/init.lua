@@ -27,7 +27,7 @@ vim.o.splitbelow = true
 
 -- Terminal GUI colours
 if vim.call('has', 'termguicolors') then
-    vim.o.termguicolors = true
+	vim.o.termguicolors = true
 end
 
 vim.filetype.add({
@@ -45,14 +45,27 @@ vim.keymap.set('n', '<Right>', '<Nop>', {})
 -- Install lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
-        lazypath,
-    })
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
 end
 vim.opt.rtp:prepend(lazypath)
 require('lazy').setup('plugins')
+
+vim.lsp.enable({
+	'lua_ls',
+	'gleam',
+	'ts_ls',
+	-- 'denols',
+	'vue_ls',
+	'cssls',
+	'gopls',
+	'tailwindls',
+	'fennel_language_server',
+	'rust_analyzer',
+})
