@@ -1,0 +1,5 @@
+[tools]
+gleam = "1.12.0-rc1"
+erlang = "27.1.2"
+elixir = "1.18.4-otp-28"
+node = "22"

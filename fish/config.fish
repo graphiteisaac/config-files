@@ -50,9 +50,6 @@ set -g fish_user_paths /home/isaac/.local/share/ponyup/bin $fish_user_paths
 # fnm
 fnm env --use-on-cd | source
 
-# asdf
-source ~/.asdf/asdf.fish
-
 # bun completions
 # [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
@@ -69,3 +66,4 @@ set --export PATH /home/soox/.dune/bin $PATH
 # This section can be safely removed at any time if needed.
 test -r '/home/isaac/.opam/opam-init/init.fish' && source '/home/isaac/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
 # END opam configuration
+~/.local/bin/mise activate fish | source
