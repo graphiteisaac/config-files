@@ -1,7 +1,5 @@
-local util = require("lspconfig/util")
-
 return {
-  'mason-org/mason.nvim',
-  version = "1.11.0",
-  opts = {},
+	'mason-org/mason.nvim',
+	version = "2.0.1",
+	opts = {},
 }

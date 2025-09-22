@@ -57,6 +57,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 require('lazy').setup('plugins')
 
+vim.lsp.config('ts_ls', {
+	filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
+})
+
 vim.lsp.enable({
 	'lua_ls',
 	'gleam',
