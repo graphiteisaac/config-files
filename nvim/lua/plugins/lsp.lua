@@ -3,6 +3,31 @@ return {
 		'neovim/nvim-lspconfig',
 		lazy = false,
 		priority = 1,
+		config = function()
+			local open_diagnostic = function()
+				vim.diagnostic.open_float({
+					title = "Diagnostics",
+					border = "rounded",
+				}, { focus = false, scope = "cursor" })
+			end
+			vim.keymap.set('n', '<leader>]', open_diagnostic, { desc = 'Show diagnostics' })
+			vim.keymap.set('n', 'g.', open_diagnostic, { desc = 'Show diagnostics' })
+
+			-- Auto-show on hover with delay
+			vim.api.nvim_create_autocmd({ "CursorHold" }, {
+				callback = function()
+					-- Only show if there are diagnostics on the current line
+					local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+					local diagnostics = vim.diagnostic.get(0, { lnum = line })
+					if #diagnostics > 0 then
+						open_diagnostic()
+					end
+				end
+			})
+
+			-- Set hover delay
+			vim.o.updatetime = 1500 -- 1.5 second delay
+		end,
 	},
 	{
 		'mfussenegger/nvim-lint',
