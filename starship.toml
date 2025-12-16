@@ -14,6 +14,7 @@ $cmd_duration $fill (\
     $golang\
     $rust\
     $nodejs\
+	$ocaml\
 ) 
 [╰─](fg:surface2)$character\
 """
@@ -110,6 +111,12 @@ disabled = false
 format = "[ ](fg:pink)[$symbol$version]($style)[](fg:pink)"
 style = "bg:pink fg:crust"
 symbol = " "
+disabled = false
+
+[ocaml]
+format = "[ ](fg:peach)[$symbol$version]($style)[](fg:peach)"
+style = "bg:peach fg:black"
+symbol = " "
 disabled = false
 
 [c]
