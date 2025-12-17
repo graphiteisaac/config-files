@@ -72,4 +72,5 @@ vim.lsp.enable({
 	'tailwindls',
 	'fennel_language_server',
 	'rust_analyzer',
+	'ocaml',
 })

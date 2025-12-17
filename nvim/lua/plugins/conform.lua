@@ -14,8 +14,21 @@ return {
 			typescript = { "biome" },
 			go = { "gofmt", "goimports" },
 			gleam = { "gleam" },
-			php = { "prettier", "php-cs-fixer", "pretty-php" }
-		}
+			php = { "prettier", "php-cs-fixer", "pretty-php" },
+			ocaml = { "ocamlformat" },
+		},
+		formatters = {
+			ocamlformat = {
+				prepend_args = {
+					"--if-then-else",
+					"vertical",
+					"--break-cases",
+					"fit-or-vertical",
+					"--type-decl",
+					"sparse",
+				},
+			},
+		},
 	},
 	init = function()
 		vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
