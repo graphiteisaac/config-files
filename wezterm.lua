@@ -27,4 +27,9 @@ config.mouse_bindings = {
 config.audible_bell = "Disabled"
 config.warn_about_missing_glyphs = false
 
+-- Laptop
+if wezterm.hostname() == "harbour" then
+  config.font_size = 14
+end
+
 return config
