@@ -1,4 +1,5 @@
 return {
-    "axelvc/template-string.nvim",
-    opts = {}
+	"axelvc/template-string.nvim",
+	event = "InsertEnter",
+	opts = {}
 }

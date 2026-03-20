@@ -73,4 +73,5 @@ vim.lsp.enable({
 	'fennel_language_server',
 	'rust_analyzer',
 	'ocaml',
+	'expert',
 })

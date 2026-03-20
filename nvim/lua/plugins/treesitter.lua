@@ -13,10 +13,9 @@ return {
 	config = function()
 		local ts_parsers = {
 			-- web languages
-			'twig', 'gleam', 'typescript', 'javascript', 'vue', 'css', 'php', 'tsx', 'jsx', 'typescriptreact',
-			'javascriptreact', 'sql', 'hbs', 'handlebars',
+			'twig', 'gleam', 'typescript', 'javascript', 'vue', 'css', 'php', 'tsx', 'jsx', 'sql',
 			-- fun and experimental
-			'pony', 'lisp', 'scheme',
+			'pony', 'scheme',
 			-- systems, other, etc.
 			'go', 'rust', 'ocaml',
 			-- config and writing
