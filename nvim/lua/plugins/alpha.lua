@@ -5,7 +5,7 @@ return {
 		'nvim-tree/nvim-web-devicons',
 		'nvim-lua/plenary.nvim'
 	},
-	init = function()
+	config = function()
 		local alpha = require 'alpha'
 		local dashboard = require 'alpha.themes.dashboard'
 
@@ -54,4 +54,5 @@ return {
 
 		alpha.setup(dashboard.opts)
 	end
+
 }
