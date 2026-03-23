@@ -19,7 +19,7 @@ return {
 			-- systems, other, etc.
 			'go', 'rust', 'ocaml',
 			-- config and writing
-			'djot', 'yaml', 'json', 'lua', 'markdown'
+			'djot', 'yaml', 'json', 'lua', 'markdown', 'caddy',
 		}
 
 		local nts = require("nvim-treesitter")
