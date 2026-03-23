@@ -24,6 +24,7 @@ vim.o.backupcopy = 'yes'
 vim.o.textwidth = 0
 vim.o.splitright = true
 vim.o.splitbelow = true
+vim.o.exrc = true
 
 -- Terminal GUI colours
 if vim.call('has', 'termguicolors') then
@@ -74,4 +75,5 @@ vim.lsp.enable({
 	'rust_analyzer',
 	'ocaml',
 	'expert',
+	'clangd'
 })
