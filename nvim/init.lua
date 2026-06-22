@@ -25,6 +25,7 @@ vim.o.textwidth = 0
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.exrc = true
+vim.opt.fillchars:append({ eob = " " })
 
 -- Terminal GUI colours
 if vim.call('has', 'termguicolors') then
@@ -66,7 +67,7 @@ vim.lsp.enable({
 	'lua_ls',
 	'gleam',
 	'ts_ls',
-	-- 'denols',
+	'denols',
 	'vue_ls',
 	'cssls',
 	'gopls',
