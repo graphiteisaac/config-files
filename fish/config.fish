@@ -11,6 +11,7 @@ zoxide init fish | source
 alias cat="bat"
 alias vim="nvim"
 alias tmplclip="cat $1 | sed 's/{{/{ {/g' | xclip -sel c"
+alias fj="fj -H https://forge.isaac.zone"
 
 function dsi
     wget -q -O - "https://hub.docker.com/v2/namespaces/library/repositories/$argv/tags?page_size=100" | grep -o '"name": *"[^"]*' | grep -o '[^"]*$' | sort
@@ -67,3 +68,22 @@ set --export PATH /home/soox/.dune/bin $PATH
 test -r '/home/isaac/.opam/opam-init/init.fish' && source '/home/isaac/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
 # END opam configuration
 ~/.local/bin/mise activate fish | source
+
+set -gx WASMTIME_HOME "$HOME/.wasmtime"
+
+string match -r ".wasmtime" "$PATH" > /dev/null; or set -gx PATH "$WASMTIME_HOME/bin" $PATH
+
+# dune
+source $HOME/.local/share/dune/env/env.fish
+
+# ZVM
+set -gx ZVM_INSTALL "$HOME/.zvm/self"
+set -gx PATH $PATH "$HOME/.zvm/bin"
+set -gx PATH $PATH "$ZVM_INSTALL/"
+
+# pnpm
+set -gx PNPM_HOME "/home/isaac/.local/share/pnpm"
+if not string match -q -- "$PNPM_HOME/bin" $PATH
+  set -gx PATH "$PNPM_HOME/bin" $PATH
+end
+# pnpm end
