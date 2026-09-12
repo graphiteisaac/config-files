@@ -15,6 +15,7 @@ config.window_padding = {
 }
 
 config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+config.use_resize_increments = true
 
 config.mouse_bindings = {
 	{
