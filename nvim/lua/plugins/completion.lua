@@ -8,8 +8,19 @@ return {
 		'hrsh7th/cmp-path',
 		'hrsh7th/cmp-cmdline'
 	},
-	init = function()
+	config = function()
 		local cmp = require('cmp')
+
+		local Entry = require('cmp.entry')
+		local orig_get_word = Entry._get_word
+		Entry._get_word = function(self)
+			local ok, result = pcall(orig_get_word, self)
+			if ok then
+				return result
+			end
+			return (self.completion_item and
+				(self.completion_item.insertText or self.completion_item.label)) or ''
+		end
 
 		require('snippets').setup({
 			friendly_snippets = true,
