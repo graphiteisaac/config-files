@@ -5,7 +5,7 @@ M.config = {
 }
 
 --- Convert the current visual selection (or whole buffer) to Lustre markup.
-M.convertFn = function(use_selection)
+M.convertFn = function(opts, use_selection)
 	local binary = M.config.binary
 
 	-- Check binary exists
@@ -47,13 +47,13 @@ function M.setup(opts)
 	M.config = vim.tbl_extend("force", M.config, opts or {})
 
 	-- converts the whole buffer
-	vim.api.nvim_create_user_command("Lustrify", function()
-		m.convertFn(true)
+	vim.api.nvim_create_user_command("Lustrify", function(opts)
+		M.convertFn(opts, true)
 	end, { range = true, desc = "Convert selection from HTML to Lustre markup" })
 
 	-- converts the current visual selection
-	vim.api.nvim_create_user_command("LustrifyFile", function()
-		m.convertFn(false)
+	vim.api.nvim_create_user_command("LustrifyFile", function(opts)
+		M.convertFn(opts, false)
 	end, { range = true, desc = "Convert visual selection from HTML to Lustre markup" })
 end
 
