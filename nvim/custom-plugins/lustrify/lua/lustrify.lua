@@ -5,15 +5,12 @@ M.config = {
 }
 
 --- Convert the current visual selection (or whole buffer) to Lustre markup.
-local function convert(use_selection)
+M.convertFn = function(use_selection)
 	local binary = M.config.binary
 
 	-- Check binary exists
 	if vim.fn.executable(binary) == 0 then
-		vim.notify(
-			"lustrify: binary not found at '" .. binary .. "'. Is it on your $PATH?",
-			vim.log.levels.ERROR
-		)
+		vim.notify("lustrify: binary not found at '" .. binary .. "'. Is it on your $PATH?", vim.log.levels.ERROR)
 		return
 	end
 
@@ -21,8 +18,8 @@ local function convert(use_selection)
 	local start_line, end_line
 
 	if use_selection then
-		start_line = vim.fn.line("'<")
-		end_line = vim.fn.line("'>")
+		start_line = opts.line1 or vim.fn.line("'<")
+		end_line = opts.line2 or vim.fn.line("'>")
 		lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
 	else
 		start_line = 1
@@ -36,10 +33,7 @@ local function convert(use_selection)
 	local result = vim.system({ binary, "--fragment" }, { stdin = input }):wait()
 
 	if result.code ~= 0 then
-		vim.notify(
-			"lustrify error:\n" .. (result.stderr or "unknown error"),
-			vim.log.levels.ERROR
-		)
+		vim.notify("lustrify error:\n" .. (result.stderr or "unknown error"), vim.log.levels.ERROR)
 		return
 	end
 
@@ -54,12 +48,12 @@ function M.setup(opts)
 
 	-- converts the whole buffer
 	vim.api.nvim_create_user_command("Lustrify", function()
-		convert(true)
-	end, { desc = "Convert entire buffer from HTML to Lustre markup" })
+		m.convertFn(true)
+	end, { range = "true", desc = "Convert selection from HTML to Lustre markup" })
 
 	-- converts the current visual selection
 	vim.api.nvim_create_user_command("LustrifyFile", function()
-		convert(false)
+		m.convertFn(false)
 	end, { range = true, desc = "Convert visual selection from HTML to Lustre markup" })
 end
 
