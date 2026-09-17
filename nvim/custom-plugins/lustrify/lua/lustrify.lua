@@ -49,7 +49,7 @@ function M.setup(opts)
 	-- converts the whole buffer
 	vim.api.nvim_create_user_command("Lustrify", function()
 		m.convertFn(true)
-	end, { range = "true", desc = "Convert selection from HTML to Lustre markup" })
+	end, { range = true, desc = "Convert selection from HTML to Lustre markup" })
 
 	-- converts the current visual selection
 	vim.api.nvim_create_user_command("LustrifyFile", function()
