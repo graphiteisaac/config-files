@@ -6,6 +6,9 @@ starship init fish | source
 # Zoxide (z) - better CD with memory
 zoxide init fish | source
 
+# Set first command back to blue (updated to white in v4)
+set fish_color_command blue
+
 
 # Helpful aliases
 alias cat="bat"
