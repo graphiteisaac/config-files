@@ -1,7 +1,7 @@
 -- Standard Vim / Neovim settings
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-vim.o.mouse = 'v'
+vim.o.mouse = "v"
 vim.o.number = true
 vim.o.showmatch = true
 vim.o.ignorecase = true
@@ -13,14 +13,14 @@ vim.o.expandtab = false
 vim.o.shiftwidth = 2
 vim.o.autoindent = true
 vim.o.smartindent = true
-vim.o.wildmode = 'longest,list'
-vim.o.syntax = 'on'
-vim.o.mouse = 'a'
-vim.o.clipboard = 'unnamedplus'
+vim.o.wildmode = "longest,list"
+vim.o.syntax = "on"
+vim.o.mouse = "a"
+vim.o.clipboard = "unnamedplus"
 vim.o.cursorline = true
 vim.o.ttyfast = true
-vim.o.signcolumn = 'yes'
-vim.o.backupcopy = 'yes'
+vim.o.signcolumn = "yes"
+vim.o.backupcopy = "yes"
 vim.o.textwidth = 0
 vim.o.splitright = true
 vim.o.splitbelow = true
@@ -28,21 +28,21 @@ vim.o.exrc = true
 vim.opt.fillchars:append({ eob = " " })
 
 -- Terminal GUI colours
-if vim.call('has', 'termguicolors') then
+if vim.call("has", "termguicolors") then
 	vim.o.termguicolors = true
 end
 
 vim.filetype.add({
 	pattern = {
-		['.djot'] = 'djot',
+		[".djot"] = "djot",
 	},
 })
 
 -- Disable unenlightened arrow keys in normal mode
-vim.keymap.set('n', '<Up>', '<Nop>', {})
-vim.keymap.set('n', '<Down>', '<Nop>', {})
-vim.keymap.set('n', '<Left>', '<Nop>', {})
-vim.keymap.set('n', '<Right>', '<Nop>', {})
+vim.keymap.set("n", "<Up>", "<Nop>", {})
+vim.keymap.set("n", "<Down>", "<Nop>", {})
+vim.keymap.set("n", "<Left>", "<Nop>", {})
+vim.keymap.set("n", "<Right>", "<Nop>", {})
 
 -- Install lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -57,24 +57,25 @@ if not vim.loop.fs_stat(lazypath) then
 	})
 end
 vim.opt.rtp:prepend(lazypath)
-require('lazy').setup('plugins')
+require("lazy").setup("plugins")
 
-vim.lsp.config('ts_ls', {
-	filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
+vim.lsp.config("ts_ls", {
+	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
 })
 
 vim.lsp.enable({
-	'lua_ls',
-	'gleam',
-	'ts_ls',
-	'denols',
-	'vue_ls',
-	'cssls',
-	'gopls',
-	'tailwindls',
-	'fennel_language_server',
-	'rust_analyzer',
-	'ocaml',
-	'expert',
-	'clangd'
+	"lua_ls",
+	"gleam",
+	"ts_ls",
+	"denols",
+	"vue_ls",
+	"cssls",
+	"gopls",
+	"tailwindls",
+	"fennel_language_server",
+	"rust_analyzer",
+	"ocaml",
+	"expert",
+	"clangd",
+	"templ",
 })
