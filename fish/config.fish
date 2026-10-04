@@ -69,7 +69,6 @@ set -gx PATH $PATH ~/.cargo/bin
 # This section can be safely removed at any time if needed.
 test -r '/home/isaac/.opam/opam-init/init.fish' && source '/home/isaac/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
 # END opam configuration
-~/.local/bin/mise activate fish | source
 
 set -gx WASMTIME_HOME "$HOME/.wasmtime"
 
@@ -89,3 +88,5 @@ if not string match -q -- "$PNPM_HOME/bin" $PATH
   set -gx PATH "$PNPM_HOME/bin" $PATH
 end
 # pnpm end
+
+mise activate fish | source

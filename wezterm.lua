@@ -15,6 +15,7 @@ config.window_padding = {
 }
 
 config.use_resize_increments = true
+
 config.window_frame = {
 	font = wezterm.font({ family = "Maple Mono NF", weight = "Bold" }),
 	font_size = 12.0,

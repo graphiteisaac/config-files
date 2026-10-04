@@ -39,6 +39,11 @@ return {
 			'lua',
 			'markdown',
 			'caddy',
+			"yaml",
+			"json",
+			"lua",
+			"markdown",
+			"caddy",
 		}
 
 		local nts = require("nvim-treesitter")
