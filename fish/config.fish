@@ -6,6 +6,9 @@ starship init fish | source
 # Zoxide (z) - better CD with memory
 zoxide init fish | source
 
+# Set first command back to blue (updated to white in v4)
+set fish_color_command blue
+
 
 # Helpful aliases
 alias cat="bat"
@@ -44,12 +47,9 @@ end
 # Programming tools
 set BUN_INSTALL "$HOME/.bun"
 set DENO_INSTALL "$HOME/.deno"
-set PATH /usr/local/go/bin $HOME/go/bin $BUN_INSTALL/bin $HOME/.zig $HOME/.local/share/fnm $PATH $DENO_INSTALL/bin $HOME/.cache/rebar3/bin
+set PATH /usr/local/go/bin $HOME/go/bin $BUN_INSTALL/bin $HOME/.zig $PATH $DENO_INSTALL/bin $HOME/.cache/rebar3/bin
 fish_add_path $HOME/.composer/vendor/bin /opt/nvim-linux-x86_64/bin 
 set -g fish_user_paths /home/isaac/.local/share/ponyup/bin $fish_user_paths
-
-# fnm
-fnm env --use-on-cd | source
 
 # bun completions
 # [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
@@ -59,6 +59,8 @@ fnm env --use-on-cd | source
 # dune
 set --export PATH /home/soox/.dune/bin $PATH
 
+# Cargo
+set -gx PATH $PATH ~/.cargo/bin
 
 # BEGIN opam configuration
 # This is useful if you're using opam as it adds:

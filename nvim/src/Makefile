@@ -1,0 +1,2 @@
+%.fnl: %.lua
+	fennel -c

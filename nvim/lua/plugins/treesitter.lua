@@ -1,44 +1,60 @@
 return {
-	'nvim-treesitter/nvim-treesitter',
+	"nvim-treesitter/nvim-treesitter",
 	lazy = false,
-	branch = 'main',
-	build = ':TSUpdate',
+	branch = "main",
+	build = ":TSUpdate",
 	opts = {
 		options = {
+			indent = true,
 			highlight = {
-				disable = { 'help', 'doc' },
-			}
-		}
+				disable = { "help", "doc" },
+			},
+		},
 	},
 	config = function()
 		local ts_parsers = {
 			-- web languages
-			'twig', 'gleam', 'typescript', 'javascript', 'vue', 'css', 'php', 'tsx', 'jsx', 'sql',
+			"twig",
+			"gleam",
+			"typescript",
+			"javascript",
+			"vue",
+			"css",
+			"php",
+			"tsx",
+			"jsx",
+			"sql",
 			-- fun and experimental
-			'pony', 'scheme',
+			"pony",
+			"scheme",
 			-- systems, other, etc.
-			'go', 'rust', 'ocaml',
+			"go",
+			"rust",
+			"ocaml",
 			-- config and writing
-			--		'djot',
-			'yaml', 'json', 'lua', 'markdown', 'caddy',
-			-- templating
 			'glimmer', -- handlebars
+			'djot',
+			'yaml',
+			'json',
+			'lua',
+			'markdown',
+			'caddy',
 		}
 
 		local nts = require("nvim-treesitter")
 		nts.install(ts_parsers)
 
-		vim.api.nvim_create_autocmd('FileType', {
+		vim.api.nvim_create_autocmd("FileType", {
 			callback = function(args)
 				local filetype = args.match
 				local lang = vim.treesitter.language.get_lang(filetype)
 
 				if vim.treesitter.language.add(lang) then
 					vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-					vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+					vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 					vim.treesitter.start()
 				end
 			end,
 		})
-	end
+	end,
 }
